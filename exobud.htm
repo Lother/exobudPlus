@@ -1,0 +1,171 @@
+<html>
+<head>
+<META NAME="ROBOTS" CONTENT="NOINDEX,NOFOLLOW,NOSNIPPET,NOARCHIVE"> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<title>:: ExoBUD Plus 網站媒體播放程式 By Lother ::</title>
+<link href="favicon.ico" rel="SHORTCUT ICON">
+<link rel="stylesheet" type="text/css" href="exobud.css">
+<!--
+============================================================【程式資訊及版權宣告】====
+  ExoBUD MP(II) v4.1tc+ [Traditional Chinese Version]
+  Copyright(Pe) 1999-2003 Jinwoong Yu[ExoBUD], Kendrick Wong[kiddiken.net].
+======================================================================================
+  程式原作者: 庾珍雄(Jinwoong Yu)         繁體中文化作者: 驚直(Kendrick Wong/kiddiken)
+    個人網站: http://exobud.nayana.org          個人網站: http://kiddiken.net
+    電子郵件: exobud@hanmail.net                電子郵件: webmaster@kiddiken.net
+    ICQ 帳號: 96138429                          MSN 帳號: kiddiken@msn.com
+    發表日期: 2003.01.10(此版本原韓文版)        發表日期: 2003.03.23(繁體中文首個版本)
+======================================================================================
+
+    版權所有。
+    請尊重智慧財產權： 無論您對本程式 ExoBUD MP(II) 作任何修改、製作(或翻譯)面板，請您
+    *必須*保留此段版權宣告的內容，包括程式(及面板)原作者及中文化作者的名字和網站連結。
+
+    如果您想要以這個繁體中文版的程式為基礎，翻譯成其他語言的版本，及／或在網際網路上，
+    公開發表您所修改過的版本，請您首先以傳送電子郵件的方式，徵求我們的同意。
+
+    請不要將程式(或面板)原作者或中文化作者的名字改成您自己的名字，
+    然後以另一程式名稱重新命名後在網路上公開發表及散播本程式，因為這是嚴重的侵權行為。
+
+    這是公益免費程式，所以請不要使用在商業用途上。
+    另外，您亦不可將本程式(全部或部份)複製到其他儲存媒體(例如光碟片)上作販賣獲利用途。
+
+    假如因為使用本程式而令您蒙受資料遺失或損毀，程式原作者及中文化作者均不用對其負責。
+
+============================================================【面板(Skin)製作資訊】====
+  ExoBUD MP(II) v4.1tc+ RUBY面板 (RUBY Skin, v1.1)
+======================================================================================
+  面板原作者: RUBY                        繁體中文化作者: 驚直(Kendrick Wong/kiddiken)
+    個人網站: http://ruby.narun.net             個人網站: http://kiddiken.net
+    電子郵件: (沒有提供)                        電子郵件: webmaster@kiddiken.net
+    MSN 帳號: (沒有提供)                        MSN 帳號: kiddiken@msn.com
+    發表日期: 2003.02.01                        發表日期: 2003.04.15
+======================================================================================
+
+    使用此面板播放器的相關注意事項：
+
+        您可以在設定播放清單項目的媒體標題時，使用像 &#12345; 這些"Unicode/萬國碼"
+        來轉換成您想要的字符，包括繁體中文以外的雙字節字元 (例如韓文、日文) 和其他
+        特殊字元；但您同時也需要將「在瀏覽器的狀態列顯示播放器文字訊息」的設定項目
+        (blnStatusBar)設為 false，因為瀏覽器的狀態列是無法轉換像 &#12345; 這些萬國
+        字符控制碼的。
+
+======================================================================================
+-->
+<!-- 載入 jquery ,jPlayer -->
+<script language="JavaScript" src="jquery-2.0.2.js"></script>
+<script language="JavaScript" src="jQuery.jPlayer/jquery.jplayer.js"></script>
+
+<!-- 載入 ExoBUD MP(II) 主程式 -->
+<script language="JavaScript" src="exobud.js"></script>
+
+<!-- 載入 ExoBUD MP(II) 基本設定檔 -->
+<script language="JavaScript" src="exobudset.js"></script>
+
+<!-- 載入 ExoBUD MP(II) 播放清單設定檔 -->
+<script language="JavaScript" src="exobudpl.js"></script>
+
+<!-- 載入「動態按鈕圖檔切換」的 JavaScript 程式檔 -->
+<script language="JavaScript" src="imgchg.js"></script>
+</head>
+
+<!-- 當您將這個媒體播放器嵌入您的網站使用時，建議預留 640~760px(像素) 的寬度
+     乘以 32px(像素) 的高度 (在不使用字幕功能的情況下) 來設計框架的內容。 -->
+
+<body onLoad="initExobud();" onDragStart="return false" onSelectStart="return false"
+  topmargin=0 leftmargin=0 marginwidth=0 marginheight=0>
+<div id="Exobud" class="jp-jplayer"></div>
+
+
+<table height=31 align=center cellpadding=0 cellspacing=0 border=0>
+  <tr>
+    <td>
+
+<table height=31 align=center cellpadding=0 cellspacing=0 border=0>
+  <tr>
+
+      <!-- 顯示播放狀態的 Scope 動態圖檔：
+           如果您想要變更這個圖檔，請同時參考及修改 imgchg.js 接近檔末的部份。 -->
+    <td width=30 height=31 align=center
+     ><img name="scope" src="./img/scope_off.gif" width=30 height=25
+        title=""
+    ></td>
+
+    <td width=11 background="./img/bg1l.gif"></td>
+    <td width=140 background="./img/bg1c.gif">
+
+      <!-- 顯示媒體標題的方塊：
+           本面板播放器使用跑馬燈(marquee)的方式顯示媒體標題，所以您不用擔心因為標題過長而不能完整顯示。
+           您可以根據個人喜好來設定跑馬燈的屬性，包括跑動方式(behavior)及跑動速度(scrollamount,scrolldelay)。 -->
+      <marquee behavior="scroll" width=140 height=12 scrollamount=2 scrolldelay=70>
+        <span id="disp1" class="title">ExoBUD MP(II) v4.1tc+ 網站媒體播放程式</span>
+      </marquee>
+
+    </td>
+    <td width=11 background="./img/bg1r.gif"></td>
+    <td width=11 background="./img/bg2l.gif"></td>
+    <td width=100 align=center background="./img/bg2c.gif" nowrap onClick="chgTimeFmt()">
+
+      <!-- 顯示時間長度的方塊：
+           假如媒體的時間長度超過一小時，請將 width 的數值適當地增加，令資訊可以顯示得完整。 -->
+      <span id="disp2" class="time" title="時間長度顯示方式 (正常/倒數)"
+        style="width:100;cursor:hand;padding-bottom:2px">00:00 | 00:00</span>
+
+    </td>
+    <td width=11 background="./img/bg2r.gif"></td>
+    <td width=11 background="./img/bg.gif"></td>
+
+      <!-- 播放器控制面板上的所有按鈕：
+           如果您想要變更這些圖檔，請同時參考及修改 imgchg.js 這個檔案的內容。 -->
+
+    <td nowrap
+     ><img name="vmute" src="./img/btn_mute_off.gif"    width=15 height=25 border=0 onClick="jplayerMute()"
+        onMouseOver="imgtog('vmute',2)" onMouseOut="imgtog('vmute',3)" style="cursor:hand" title="靜音模式"
+     ><img name="vdn"   src="./img/btn_vdn.gif"         width=15 height=25 border=0 onClick="jplayerVolDn()"
+        onMouseOver="imgtog('vdn',2)"   onMouseOut="imgtog('vdn',3)"   style="cursor:hand" title="減少音量"
+     ><img name="vup"   src="./img/btn_vup.gif"         width=15 height=25 border=0 onClick="jplayerVolUp()"
+        onMouseOver="imgtog('vup',2)"   onMouseOut="imgtog('vup',3)"   style="cursor:hand" title="增加音量"
+    ></td>
+
+    <td width=11 background="./img/bg.gif"></td>
+
+    <td nowrap
+     ><img name="pmode" src="./img/btn_rndmode_off.gif" width=15 height=25 border=0 onClick="chgPMode()"
+        onMouseOver="imgtog('pmode',2)" onMouseOut="imgtog('pmode',3)" style="cursor:hand" title="播放順序 (S=循序 R=隨機)"
+     ><img name="rept"  src="./img/btn_rept_off.gif"    width=15 height=25 border=0 onClick="chkRept()"
+        onMouseOver="imgtog('rept',2)"  onMouseOut="imgtog('rept',3)"  style="cursor:hand" title="切換是否重複播放目前的曲目"
+    ></td>
+
+    <td width=11 background="./img/bg.gif"></td>
+
+    <td nowrap
+     ><img name="prevt" src="./img/btn_prev.gif"        width=20 height=25 border=0 onClick="playPrev()"
+        onMouseOver="imgtog('prevt',2)" onMouseOut="imgtog('prevt',3)" style="cursor:hand" title="上一首曲目"
+     ><img name="pauzt" src="./img/btn_pauz_off.gif"    width=20 height=25 border=0 onClick="jplayerPause()"
+        onMouseOver="imgtog('pauzt',2)" onMouseOut="imgtog('pauzt',3)" style="cursor:hand" title="暫停．繼續"
+     ><img name="stopt" src="./img/btn_stop.gif"        width=20 height=25 border=0 onClick="jplayerStop()"
+        onMouseOver="imgtog('stopt',2)" onMouseOut="imgtog('stopt',3)" style="cursor:hand" title="停止"
+     ><img name="playt" src="./img/btn_play.gif"        width=20 height=25 border=0 onClick="startExobud()"
+        onMouseOver="imgtog('playt',2)" onMouseOut="imgtog('playt',3)" style="cursor:hand" title="播放"
+     ><img name="nextt" src="./img/btn_next.gif"        width=20 height=25 border=0 onClick="playNext()"
+        onMouseOver="imgtog('nextt',2)" onMouseOut="imgtog('nextt',3)" style="cursor:hand" title="下一首曲目"
+    ></td>
+    <td width=11 background="./img/bg_r.gif"></td>
+  </tr>
+</table>
+
+    </td>
+  </tr>
+  <tr>
+    <td height=0>
+
+      <!-- 顯示字幕框的部份：
+           如果您想要使用字幕功能，您便需要預留頁面一些空間用來顯示這個字幕框。
+           無論您是否使用字幕功能，請勿隨便修改或刪除下面這段  DIV 區塊的語法。 -->
+      <div id="capText" style="width:100%;height:60;color:white;background-color:#555555;padding-top:3px;padding-left:5px;display:none"
+        >ExoBUD MP(II) 字幕顯示系統(SMI)</div>
+
+    </td>
+  </tr>
+</body>
+</html>
